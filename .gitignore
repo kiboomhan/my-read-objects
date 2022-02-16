@@ -2,6 +2,7 @@
 **/kafka-streams-examples
 **/delta_configs/
 **/target/
+build/
 img_data
 **/python_notify/
 **/confluent-hub-components/
