@@ -1,0 +1,71 @@
+@startuml
+class ex02.movieApp001.AmountDiscountPolicy {
+- Money discountAmount
+# Money getDiscountAmount(Screening)
+}
+class ex02.movieApp001.PercentDiscountPolicy {
+- double percent
+# Money getDiscountAmount(Screening)
+}
+class ex02.movieApp001.Reservation {
+- Customer customer
+- Screening screening
+- Money fee
+- int audienceCount
+}
+class ex02.movieApp001.Money {
++ {static} Money ZERO
+- BigDecimal amount
++ {static} Money wons(long)
++ {static} Money wons(double)
++ Money plus(Money)
++ Money minus(Money)
++ Money times(double)
++ boolean isLessThan(Money)
++ boolean isGreaterThanOrEqual(Money)
+}
+abstract class ex02.movieApp001.DiscountPolicy {
+~ List<DiscountCondition> conditions
++ Money calculateDiscountAmount(Screening)
+# {abstract}Money getDiscountAmount(Screening)
+}
+class ex02.movieApp001.SequenceCondition {
+- int sequence
++ boolean isSatisfiedBy(Screening)
+}
+interface ex02.movieApp001.DiscountCondition {
+~ boolean isSatisfiedBy(Screening)
+}
+class ex02.movieApp001.Movie {
+- String title
+- Duration runningTime
+- Money fee
+- DiscountPolicy discountPolicy
++ Money getFee()
++ Money calculateMovieFee(Screening)
+}
+class ex02.movieApp001.PeriodCondition {
+- DayOfWeek dayOfWeek
+- LocalTime startTime
+- LocalTime endTime
++ boolean isSatisfiedBy(Screening)
+}
+class ex02.movieApp001.Customer {
+}
+class ex02.movieApp001.Screening {
+- Movie movie
+- int sequence
+- LocalDateTime whenScreened
++ LocalDateTime getStartTime()
++ boolean isSequence(int)
++ Money getMovieFee()
++ Reservation reserve(Customer,int)
+- Money calculateFee(int)
+}
+
+
+ex02.movieApp001.DiscountPolicy <|-- ex02.movieApp001.AmountDiscountPolicy
+ex02.movieApp001.DiscountPolicy <|-- ex02.movieApp001.PercentDiscountPolicy
+ex02.movieApp001.DiscountCondition <|.. ex02.movieApp001.SequenceCondition
+ex02.movieApp001.DiscountCondition <|.. ex02.movieApp001.PeriodCondition
+@enduml
